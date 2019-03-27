@@ -1,10 +1,14 @@
 package net.lzzy.cinemanager.activities;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
 import android.os.Bundle;
+import android.util.SparseArray;
 import android.view.View;
+import android.view.Window;
 import android.widget.SearchView;
 import android.widget.TextView;
 
@@ -20,10 +24,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private View layoutMenu;
     private TextView tvTitle;
     private SearchView search;
+    private SparseArray<String> titleArray = new SparseArray<>();
+    private SparseArray<Fragment> fragmentArray = new SparseArray<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        supportRequestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.activity_main);
         setTitleMenu();
     }
@@ -56,24 +63,35 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     public void onClick(View v) {
         layoutMenu.setVisibility(View.GONE);
-        switch (v.getId()) {
+        tvTitle.setText(titleArray.get(v.getId()));
+        FragmentTransaction transaction = manager.beginTransaction();
+        Fragment fragment = fragmentArray.get(v.getId());
+        if (fragment == null) {
+            fragment = createFragment(v.getId());
+            fragmentArray.put(v.getId(), fragment);
+            transaction.add(R.id.fragment_container, fragment);
+        }
+        for (Fragment f:manager.getFragments()) {
+            transaction.hide(f);
+        }
+        transaction.show(fragment).commit();
+    }
+
+    private Fragment createFragment(int id) {
+        switch (id) {
             case R.id.bar_order:
-                break;
+                return new OrdersFragment();
             case R.id.bar_add_cinema:
-                tvTitle.setText("影院列表");
-                manager.beginTransaction()
-                        .replace(R.id.fragment_container, new CinemasFragment())
-                        .commit();
                 break;
             case R.id.bar_add_order:
-                tvTitle.setText("我的订单");
-                manager.beginTransaction()
-                        .replace(R.id.fragment_container, new OrdersFragment())
-                        .commit();
                 break;
+            case R.id.bar_see_cinema:
+                return new CinemasFragment();
             default:
                 break;
         }
+        return null;
     }
 }
+
 
