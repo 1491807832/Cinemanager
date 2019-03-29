@@ -9,19 +9,31 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import com.lljjcoder.Interface.OnCityItemClickListener;
+import com.lljjcoder.bean.CityBean;
+import com.lljjcoder.bean.DistrictBean;
+import com.lljjcoder.bean.ProvinceBean;
+import com.lljjcoder.style.cityjd.JDCityPicker;
+
 import net.lzzy.cinemanager.R;
 
 /**
  * Created by lzzy_gxy on 2019/3/27.
  * Description:
  */
-public class AddOrdersFragment extends Fragment {
+public class AddOrdersFragment extends BaseFragment {
     public AddOrdersFragment(){}
 
-    @Nullable
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view=inflater.inflate(R.layout.fragment_add_orders,null);
-        return view;
+    protected void Populate() {
+        getView().findViewById(R.id.fragment_orders_add);
+
     }
+
+    @Override
+    public int getLayoutRes() {
+        return R.layout.fragment_add_orders;
+    }
+
+
 }

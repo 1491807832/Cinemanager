@@ -47,22 +47,22 @@
 
     </RelativeLayout>
 
-    <EditText
-        android:id="@+id/activity_dialog_edt_name"
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:hint="请输入名称" />
+        <EditText
+            android:id="@+id/activity_dialog_edt_name"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:hint="请输入名称" />
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom">
         <Button android:id="@+id/activity_dialog_cancel"
-            android:layout_width="0dp"
+        android:layout_width="0dp"
             android:layout_weight="1"
             android:textSize="18dp"
             android:gravity="right"
-            android:layout_height="wrap_content"
-            android:text="取消"/>
+        android:layout_height="wrap_content"
+        android:text="取消"/>
 
         <Button
             android:id="@+id/activity_dialog_save"
