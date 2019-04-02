@@ -1,9 +1,11 @@
 package net.lzzy.cinemanager.fragments;
 
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Adapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -28,9 +30,15 @@ public class CinemasFragment extends BaseFragment {
     private List<Cinema> cinemas;
     private CinemaFactory factory = CinemaFactory.getInstance();
     private ListView lv;
-    private String city = "柳州市";
-    private String province = "广西壮族自治区";
-    private String area = "鱼峰区";
+    private Cinema cinema;
+    private GenericAdapter<Cinema> adapter;
+    public CinemasFragment(Cinema cinema) {
+        this.cinema=cinema;
+    }
+    public CinemasFragment(){
+
+    }
+
 
 
     @Override
@@ -39,7 +47,7 @@ public class CinemasFragment extends BaseFragment {
         View empty = find(R.id.activity_cinemas_tv_none);
         lv.setEmptyView(empty);
         cinemas = factory.get();
-        GenericAdapter<Cinema> adapter = new GenericAdapter<Cinema>(getActivity(), R.layout.cinema_item, cinemas) {
+        adapter = new GenericAdapter<Cinema>(getActivity(), R.layout.cinema_item, cinemas) {
             @Override
             public void populate(ViewHolder holder, Cinema cinema) {
                 holder.setTextView(R.id.activity_cinema_item_name, cinema.getName())
@@ -57,6 +65,10 @@ public class CinemasFragment extends BaseFragment {
             }
         };
         lv.setAdapter(adapter);
+        if (cinema != null) {
+            svae(cinema);
+        }
+
     }
 
     @Override
@@ -64,5 +76,20 @@ public class CinemasFragment extends BaseFragment {
         return R.layout.fragment_cincmas;
     }
 
+    @Override
+    public void sarch(String kw) {
+        cinemas.clear();
+        if (TextUtils.isEmpty(kw)) {
+            cinemas.addAll(factory.get());
+        } else {
+            cinemas.addAll(factory.searchCinemas(kw));
+        }
+        adapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public void svae(Cinema cinema) {
+        adapter.add(cinema);
+    }
 
 }
